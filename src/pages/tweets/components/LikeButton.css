@@ -1,0 +1,35 @@
+.likeButton {
+  align-items: center;
+  color: rgb(101, 119, 134);
+  display: inline-flex;
+}
+
+.likeButton-icon {
+  align-items: center;
+  background-color: transparent;
+  border-radius: 9999px;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.likeButton,
+.likeButton-icon {
+  transition: all 0.2s;
+}
+
+.likeButton--active,
+.likeButton:hover {
+  color: rgb(224, 36, 94);
+}
+
+.likeButton:hover .likeButton-icon {
+  background: rgb(224, 36, 94, 0.1);
+}
+
+.likeButton-label {
+  font-size: 14px;
+  min-width: calc(1em + 20px);
+  padding: 0 2px;
+}
