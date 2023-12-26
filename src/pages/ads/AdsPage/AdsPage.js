@@ -1,34 +1,33 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { getLatestTweets } from '../service';
+import { getLatestAds } from '../service';
 import Button from '../../../components/shared/Button';
 import Content from '../../../components/layout/Content';
-import Tweet from '../components/Tweet';
 import Filter from './Filter';
 
-import './TweetsPage.css';
+import './AdsPage.css';
 
 const EmptyList = () => (
-  <div className="tweetsPage-empty">
+  <div className="adsPage-empty">
     <p>Be the first one!</p>
     <NavLink to="new">
-      <Button $variant="primary">Create tweet</Button>
+      <Button $variant="primary">Create ad</Button>
     </NavLink>
   </div>
 );
 
-function TweetsPage() {
-  const [tweets, setTweets] = useState([]);
+function AdsPage() {
+  const [ads, setAds] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [saleFilter, setSaleFilter] = useState(null);
 
   useEffect(() => {
-    getLatestTweets().then(tweets => setTweets(tweets));
+    getLatestAds().then(ads => setAds(ads));
   }, []);
 
-  const filteredTweets = tweets.filter(tweet => {
-    const nameMatch = tweet.name.toLowerCase().includes(nameFilter.toLowerCase());
-    const saleMatch = saleFilter === null || tweet.sale === saleFilter;
+  const filteredAds = ads.filter(ad => {
+    const nameMatch = ad.name.toLowerCase().includes(nameFilter.toLowerCase());
+    const saleMatch = saleFilter === null || ad.sale === saleFilter;
 
     return nameMatch && saleMatch;
   });
@@ -40,10 +39,10 @@ function TweetsPage() {
         onSaleChange={(value) => setSaleFilter(value)}
       />
 
-      <div className="tweetsPage">
-        {filteredTweets.length ? (
+      <div className="adsPage">
+        {filteredAds.length ? (
           <ul>
-            {filteredTweets.map(({ id, name, sale, price, tags }) => (
+            {filteredAds.map(({ id, name, sale, price, tags }) => (
               <li key={id}>
                 <Link to={`${id}`}>
                   <div>
@@ -65,4 +64,4 @@ function TweetsPage() {
   );
 }
 
-export default TweetsPage;
+export default AdsPage;

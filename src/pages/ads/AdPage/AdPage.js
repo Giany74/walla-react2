@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import Content from '../../../components/layout/Content';
-import { getTweet, deleteTweet } from '../service';
+import { getAd, deleteAd } from '../service';
 import defaultPhoto from '../../../assets/default-profile.png';
 import ConfirmationModal from '../../../components/ConfirmationModal';
 
-function TweetPage() {
+function AdPage() {
   const params = useParams();
   const navigate = useNavigate();
-  const [tweet, setTweet] = useState(null);
+  const [ad, setAd] = useState(null);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   useEffect(() => {
-    getTweet(params.tweetId)
-      .then(tweet => setTweet(tweet))
+    getAd(params.adId)
+      .then(ad => setAd(ad))
       .catch(error => {
         if (error.status === 404) {
           navigate('/404');
         }
       });
-  }, [navigate, params.tweetId]);
+  }, [navigate, params.adId]);
 
   const handleDelete = async () => {
     setIsConfirmationModalOpen(true);
@@ -27,11 +27,11 @@ function TweetPage() {
 
   const handleConfirmDelete = async () => {
     try {
-      await deleteTweet(params.tweetId);
-      console.log(`Tweet con ID ${params.tweetId} eliminado con éxito`);
-      navigate('/tweets');
+      await deleteAd(params.adId);
+      console.log(`Ad con ID ${params.adId} eliminado con éxito`);
+      navigate('/ads');
     } catch (error) {
-      console.error('Error al eliminar el tweet', error);
+      console.error('Error al eliminar el ad', error);
     } finally {
       setIsConfirmationModalOpen(false);
     }
@@ -42,17 +42,17 @@ function TweetPage() {
   };
 
   return (
-    <Content title="Tweet detail">
+    <Content title="Ad detail">
       <div>
-        ID: {params.tweetId}
-        {tweet && (
+        ID: {params.adId}
+        {ad && (
           <div>
-            <h3>Name: {tweet.name}</h3>
-            <p>Type: {tweet.sale ? 'Sale' : 'Purchase'}</p>
-            <p>Price: {tweet.price}</p>
-            <p>Tags: {tweet.tags.join(', ')}</p>
-            {tweet.photo ? (
-              <img src={tweet.photo} alt="tweet" />
+            <h3>Name: {ad.name}</h3>
+            <p>Type: {ad.sale ? 'Sale' : 'Purchase'}</p>
+            <p>Price: {ad.price}</p>
+            <p>Tags: {ad.tags.join(', ')}</p>
+            {ad.photo ? (
+              <img src={ad.photo} alt="ad" />
             ) : (
               <img src={defaultPhoto} alt="Placeholder" />
             )}
@@ -70,4 +70,4 @@ function TweetPage() {
   );
 }
 
-export default TweetPage;
+export default AdPage;

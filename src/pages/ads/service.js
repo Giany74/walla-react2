@@ -1,20 +1,20 @@
 import { id } from 'date-fns/locale';
 import client from '../../api/client';
 
-const tweetsUrl = '/v1/adverts';
+const adsUrl = '/v1/adverts';
 const authUrl = '/auth';
 
-export const getLatestTweets = () => {
-  const url = tweetsUrl;
+export const getLatestAds = () => {
+  const url = adsUrl;
   return client.get(url);
 };
 
-export const createTweet = (tweet) => {
-  const url = tweetsUrl;
+export const createAd = (ad) => {
+  const url = adsUrl;
 
   const formData = new FormData();
 
-  Object.entries(tweet).forEach(([key, value]) => {
+  Object.entries(ad).forEach(([key, value]) => {
     if (key === 'photo') {
 
       formData.append(key, value, value.name);
@@ -37,13 +37,13 @@ export const createTweet = (tweet) => {
   });
 };
 
-export const getTweet = id => {
-  const url = `${tweetsUrl}/${id}`;
+export const getAd = id => {
+  const url = `${adsUrl}/${id}`;
   return client.get(url);
 };
 
-export const getTweetTag = tags => {
-  const url = `${tweetsUrl}/${tags}`;
+export const getAdTag = tags => {
+  const url = `${adsUrl}/${tags}`;
   return client.get(url);
 };
 
@@ -63,7 +63,11 @@ export const createAuth = (signup) => {
 };
 
 
-export const deleteTweet = id => {
-  const url = `${tweetsUrl}/${id}`;
+export const deleteAd = id => {
+  const url = `${adsUrl}/${id}`;
   return client.delete(url);
+};
+
+export const deleteAdvert = advertId => {
+  return client.delete(`${advertsPath}/${advertId}`);
 };

@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import Content from '../../../components/layout/Content';
 import Button from '../../../components/shared/Button';
-import Photo from '../../../components/shared/Photo';
-import Textarea from '../../../components/shared/Textarea';
 
-import './NewTweetPage.css';
-import { createTweet } from '../service';
+import './NewAdPage.css';
+import { createAd } from '../service';
 import { useNavigate } from 'react-router';
 
-function NewTweetPage() {
+function NewAdPage() {
   const [content, setContent] = useState({
     name: '',
     sale: '',
@@ -65,8 +63,8 @@ function NewTweetPage() {
         photo: content.photo,
       };
   
-      const tweet = await createTweet(formattedData);
-      navigate(`../${tweet.id}`, { relative: 'path' });
+      const ad = await createAd(formattedData);
+      navigate(`../${ad.id}`, { relative: 'path' });
     } catch (error) {
       if (error.status === 401) {
         navigate('/login');
@@ -95,7 +93,7 @@ function NewTweetPage() {
 
   return (
     <Content title='Buyer or Seller?'>
-      <div className='newTweetPage'>
+      <div className='newAdPage'>
         <div className='right'>
           <form onSubmit={handleSubmit}>
             <div>
@@ -172,10 +170,10 @@ function NewTweetPage() {
                 onChange={handleFileChange}
               />
             </div>
-            <div className='newTweetPage-footer'>
+            <div className='newAdPage-footer'>
             <Button
                 type='submit'
-                className='newTweetPage-submit'
+                className='newAdPage-submit'
                 $variant='primary'
                 disabled={buttonDisabled}
               >
@@ -189,4 +187,4 @@ function NewTweetPage() {
   );
 }
 
-export default NewTweetPage;
+export default NewAdPage;

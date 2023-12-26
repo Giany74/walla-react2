@@ -14,12 +14,11 @@ function Header({ className }) {
       <Link to="/">
         <div className="header-logo">
           <Icon width={32} height={32} fill="red" />
-          {/* <img src={logo} alt="twitter-react" /> */}
         </div>
       </Link>
       <nav className="header-nav">
         <NavLink
-          to="/tweets/new"
+          to="/ads/new"
           replace
           className={navItemClassName}
         >
@@ -28,7 +27,7 @@ function Header({ className }) {
         <NavLink to="/signup" className={navItemClassName} style={{ color: 'grey'}} end>
           SignUp
         </NavLink>
-        <NavLink to="/tweets" className={navItemClassName} end>
+        <NavLink to="/ads" className={navItemClassName} end>
           Last ads
         </NavLink>
         <AuthButton className="header-button" />
