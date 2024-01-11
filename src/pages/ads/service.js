@@ -1,4 +1,3 @@
-import { id } from 'date-fns/locale';
 import client from '../../api/client';
 
 const adsUrl = '/v1/adverts';
@@ -9,32 +8,17 @@ export const getLatestAds = () => {
   return client.get(url);
 };
 
-export const createAd = (ad) => {
+export const createAd = (formData) => {
   const url = adsUrl;
-
-  const formData = new FormData();
-
-  Object.entries(ad).forEach(([key, value]) => {
-    if (key === 'photo') {
-
-      formData.append(key, value, value.name);
-    } else if (key === 'name' || key === 'tags') {
-
-      formData.append(key, value);
-    } else if (key === 'price') {
-
-      formData.append(key, parseFloat(value));
-    } else {
-
-      formData.append(key, JSON.stringify(value));
-    }
-  });
-
   return client.post(url, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     },
   });
+};
+
+export const getTags = () => {
+  return client.get("/v1/adverts/tags");
 };
 
 export const getAd = id => {
@@ -66,8 +50,4 @@ export const createAuth = (signup) => {
 export const deleteAd = id => {
   const url = `${adsUrl}/${id}`;
   return client.delete(url);
-};
-
-export const deleteAdvert = advertId => {
-  return client.delete(`${advertsPath}/${advertId}`);
 };

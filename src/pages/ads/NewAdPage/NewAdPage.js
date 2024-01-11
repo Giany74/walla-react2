@@ -1,95 +1,76 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Content from '../../../components/layout/Content';
 import Button from '../../../components/shared/Button';
 
 import './NewAdPage.css';
 import { createAd } from '../service';
 import { useNavigate } from 'react-router';
+import TagsSelect from '../../../components/shared/TagsSelect';
 
 function NewAdPage() {
-  const [content, setContent] = useState({
-    name: '',
-    sale: '',
-    price: '',
-    tags: [],
-    photo: null,
-  });  
+  const [name, setName] = useState("");
+  const [sale, setSale] = useState(true);
+  const [price, setPrice] = useState(0);
+  const [tags, setTags] = useState([]);
+  const [photo, setPhoto] = useState(null);
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleSaleChange = (event) => {
+    setSale(event.target.value === "true");
+  };
+
+  const handlePriceChange = (event) => {
+    setPrice(event.target.value);
+  };
+
+  const handleTagsChange = (selectedTags) => {
+    setTags(selectedTags);
+  };
+
+  const handlePhotoChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setPhoto(file);
+    }
+  };
 
   const [isFetching, setIsFetching] = useState(false);
+
   const navigate = useNavigate();
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setContent((prevContent) => ({ ...prevContent, [name]: value }));
-  };
-
-  const handleChangeChecked = (e, key, value) => {
-    setContent((prevContent) => ({ ...prevContent, [key]: value }));
-  };
-  
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setContent((prevContent) => ({ ...prevContent, photo: file }));
-  };
-
-  const handleChangeTags = (e) => {
-    const { name, checked } = e.target;
-  
-    setContent((prevContent) => ({
-      ...prevContent,
-      tags: {
-        ...prevContent.tags,
-        [name]: checked,
-      },
-    }));
-  };
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("sale", sale);
+    formData.append("price", price);
+    tags.forEach((tag) => formData.append("tags", tag));
+    if (photo) {
+      formData.append("photo", photo);
+    }
+
     try {
       setIsFetching(true);
-  
-
-      const selectedTags = Object.entries(content.tags)
-        .filter(([key, value]) => value)
-        .map(([key]) => key.replace('tags.', ''));
-  
-      const formattedData = {
-        name: content.name,
-        sale: content.sale,
-        price: content.price,
-        tags: selectedTags,
-        photo: content.photo,
-      };
-  
-      const ad = await createAd(formattedData);
-      navigate(`../${ad.id}`, { relative: 'path' });
+      const advert = await createAd(formData);
+      navigate("/ads/" + advert.id);
     } catch (error) {
       if (error.status === 401) {
         navigate('/login');
       } else {
         setIsFetching(false);
-
       }
     }
   };
 
-  const {
-    name,
-    sale,
-    price,
-    tags: { lifestyle, mobile, motor, work },
-    photo,
-  } = content;
-
   const buttonDisabled =
-  !(
-    name &&
-    sale !== undefined &&
-    price &&
-    (lifestyle || mobile || motor || work)
-  ) || isFetching;
+    !(
+      name &&
+      sale !== undefined &&
+      price
+    ) || isFetching;
 
   return (
     <Content title='Buyer or Seller?'>
@@ -97,81 +78,61 @@ function NewAdPage() {
         <div className='right'>
           <form onSubmit={handleSubmit}>
             <div>
+              <label>Name:</label>
               <input
-                type='text'
+                id='name'
                 name='name'
-                placeholder='Name'
+                type='text'
                 value={name}
-                onChange={handleChange}
+                onChange={handleNameChange}
               />
             </div>
             <div>
+              <label>Sale:</label>
               <input
-                type='checkbox'
+                type='radio'
+                id='saleTrue'
                 name='sale'
-                checked={content.sale}
-                onChange={(e) => handleChangeChecked(e, 'sale', e.target.checked)}
-              />{' '}
-              Sale
+                value='true'
+                checked={sale === true}
+                onChange={handleSaleChange}
+              />
+              <label htmlFor='saleTrue'>True</label>
+
+              <input
+                type='radio'
+                id='saleFalse'
+                name='sale'
+                value='false'
+                checked={sale === false}
+                onChange={handleSaleChange}
+              />
+              <label htmlFor='saleFalse'>False</label>
+            </div>
+            <div>
+              <label>Price:</label>
+              <input
+                id='price'
+                name='price'
+                type='number'
+                placeholder='Price'
+                value={price}
+                onChange={handlePriceChange}
+              />
+            </div>
+            <div>
+              <TagsSelect onTagsChange={handleTagsChange} />
             </div>
             <div>
               <input
-                type='checkbox'
-                name='purchase'
-                checked={!content.sale}
-                onChange={(e) => handleChangeChecked(e, 'sale', !e.target.checked)}
-              />{' '}
-              Purchase
-            </div>
-            <div>
-            <input
-              type='number'
-              name='price'
-              placeholder='Price'
-              value={price}
-              onChange={handleChange}
-            />
-            </div>
-            <div>
-            <input
-                type='checkbox'
-                name='lifestyle'
-                checked={lifestyle}
-                onChange={handleChangeTags}
-              />{' '}
-              Lifestyle
-              <input
-                type='checkbox'
-                name='mobile'
-                checked={mobile}
-                onChange={handleChangeTags}
-              />{' '}
-              Mobile
-              <input
-                type='checkbox'
-                name='motor'
-                checked={motor}
-                onChange={handleChangeTags}
-              />{' '}
-              Motor
-              <input
-                type='checkbox'
-                name='work'
-                checked={work}
-                onChange={handleChangeTags}
-              />{' '}
-              Work
-            </div>
-            <div>
-              <input
-                type='file'
-                accept='image/*'
+                id='photo'
                 name='photo'
-                onChange={handleFileChange}
+                type='file'
+                onChange={handlePhotoChange}
               />
             </div>
             <div className='newAdPage-footer'>
-            <Button
+              <Button
                 type='submit'
                 className='newAdPage-submit'
                 $variant='primary'
