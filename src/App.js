@@ -7,6 +7,7 @@ import NewAdPage from './pages/ads/NewAdPage/NewAdPage';
 import AdPage from './pages/ads/AdPage';
 import RequireAuth from './pages/auth/components/RequireAuth';
 import SignUpPage from './pages/auth/SignUpPage';
+import Page404 from './components/shared/404';
 
 function App() {
   return (

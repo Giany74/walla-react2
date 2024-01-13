@@ -3,7 +3,8 @@ import { useNavigate, useParams } from 'react-router';
 import Content from '../../../components/layout/Content';
 import { getAd, deleteAd } from '../service';
 import defaultPhoto from '../../../assets/default-profile.png';
-import ConfirmationModal from '../../../components/ConfirmationModal';
+import ConfirmationModal from '../../../components/shared/ConfirmationModal';
+import Button from '../../../components/shared/Button';
 
 function AdPage() {
   const params = useParams();
@@ -56,7 +57,11 @@ function AdPage() {
             ) : (
               <img src={defaultPhoto} alt="Placeholder" />
             )}
-            <button onClick={handleDelete}>Delete</button>
+            <div>
+            <Button onClick={handleDelete}>
+              Delete
+            </Button>
+            </div>
           </div>
         )}
       </div>
@@ -64,7 +69,7 @@ function AdPage() {
         isOpen={isConfirmationModalOpen}
         onCancel={handleCancelDelete}
         onConfirm={handleConfirmDelete}
-        message="¿Estás seguro de borrar este ítem?"
+        message="Are you sure to delete this item?"
       />
     </Content>
   );
