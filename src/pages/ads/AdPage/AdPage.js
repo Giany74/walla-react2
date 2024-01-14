@@ -12,23 +12,30 @@ function AdPage() {
   const navigate = useNavigate();
   const [ad, setAd] = useState(null);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
-    setIsFetching(true);
-    getAd(params.adId)
-      .then(ad => setAd(ad))
-      .catch(error => {
+    const fetchData = async () => {
+      setShowToast(false);
+
+      try {
+        const fetchedAd = await getAd(params.adId);
+        setAd(fetchedAd);
+      } catch (error) {
         if (error.status === 401) {
           navigate('/login');
+        } else if (error.status === 404) {
+          navigate('/404');
         } else {
           setToastMessage(`${error.message}`);
           setShowToast(true);
-          setIsFetching(false); 
         }
-      });
+      }
+    };
+
+    fetchData();
+
   }, [navigate, params.adId]);
 
   const handleDelete = async () => {
@@ -37,7 +44,6 @@ function AdPage() {
 
   const handleConfirmDelete = async () => {
     try {
-      setIsFetching(true);
       setShowToast(false);
       await deleteAd(params.adId);
       navigate('/ads');
@@ -51,7 +57,6 @@ function AdPage() {
         setShowToast(true);
       }
     } finally {
-      setIsFetching(false);
       setIsConfirmationModalOpen(false);
     }
   };
@@ -80,8 +85,8 @@ function AdPage() {
               <img src={defaultPhoto} alt="Placeholder" />
             )}
             <div>
-              <Button onClick={handleDelete} disabled={!isFetching}>
-                {isFetching ? 'Delete' : 'Deleting...'}
+              <Button onClick={handleDelete}>
+                Deleting...
               </Button>
             </div>
           </div>

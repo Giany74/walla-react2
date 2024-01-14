@@ -23,7 +23,6 @@ function AdsPage() {
   const [ads, setAds] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [saleFilter, setSaleFilter] = useState(null);
-  const [isFetching, setIsFetching] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const navigate = useNavigate();
@@ -31,7 +30,6 @@ function AdsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsFetching(true);
         setShowToast(false);
 
         const latestAds = await getLatestAds();
@@ -45,8 +43,6 @@ function AdsPage() {
           setToastMessage("An error occurred while fetching ads. Please try again later.");
           setShowToast(true);
         }
-      } finally {
-        setIsFetching(false);
       }
     };
 
