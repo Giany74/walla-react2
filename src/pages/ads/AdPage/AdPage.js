@@ -5,19 +5,29 @@ import { getAd, deleteAd } from '../service';
 import defaultPhoto from '../../../assets/default-profile.png';
 import ConfirmationModal from '../../../components/shared/ConfirmationModal';
 import Button from '../../../components/shared/Button';
+import Toast from '../../../components/shared/Toast';
 
 function AdPage() {
   const params = useParams();
   const navigate = useNavigate();
   const [ad, setAd] = useState(null);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
+    setIsFetching(true);
     getAd(params.adId)
       .then(ad => setAd(ad))
       .catch(error => {
-        if (error.status === 404) {
-          navigate('/404');
+        
+        if (error.status === 401) {
+          navigate('/login');
+        } else {
+          setToastMessage(`${error.message}`);
+          setShowToast(true);
+          setIsFetching(false); 
         }
       });
   }, [navigate, params.adId]);
@@ -28,18 +38,30 @@ function AdPage() {
 
   const handleConfirmDelete = async () => {
     try {
+      setIsFetching(true);
+      setShowToast(false);
       await deleteAd(params.adId);
-      console.log(`Ad con ID ${params.adId} eliminado con éxito`);
       navigate('/ads');
     } catch (error) {
-      console.error('Error al eliminar el ad', error);
+      
+      if (error.status === 401) {
+        navigate('/login');
+      } else {
+        setToastMessage(`${error.message}`);
+        setShowToast(true);
+      }
     } finally {
+      setIsFetching(false);
       setIsConfirmationModalOpen(false);
     }
   };
 
   const handleCancelDelete = () => {
     setIsConfirmationModalOpen(false);
+  };
+
+  const handleToastClose = () => {
+    setShowToast(false);
   };
 
   return (
@@ -58,8 +80,8 @@ function AdPage() {
               <img src={defaultPhoto} alt="Placeholder" />
             )}
             <div>
-            <Button onClick={handleDelete}>
-              Delete
+            <Button onClick={handleDelete} disabled={!isFetching}>
+              {isFetching ? 'Delete' : 'Deleting...'}
             </Button>
             </div>
           </div>
@@ -71,6 +93,7 @@ function AdPage() {
         onConfirm={handleConfirmDelete}
         message="Are you sure to delete this item?"
       />
+      <Toast isOpen={showToast} message={toastMessage} onCancel={handleToastClose} />
     </Content>
   );
 }

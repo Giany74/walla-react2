@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { getLatestAds } from '../service';
 import Button from '../../../components/shared/Button';
 import Content from '../../../components/layout/Content';
 import Filter from './Filter';
+import Toast from '../../../components/shared/Toast';
 
 import './AdsPage.css';
 
@@ -20,10 +21,30 @@ function AdsPage() {
   const [ads, setAds] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [saleFilter, setSaleFilter] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getLatestAds().then(ads => setAds(ads));
-  }, []);
+    setIsFetching(true);
+    setShowToast(false);
+
+    getLatestAds()
+      .then(ads => setAds(ads))
+      .catch(error => {
+        setIsFetching(false);
+        setToastMessage("An error occurred while fetching ads. Please try again later.");
+        setShowToast(true);
+
+        if (!isFetching && error.status === 401) {
+          navigate('/login');
+        }
+      })
+      .finally(() => {
+        setIsFetching(false);
+      });
+  }, [navigate]);
 
   const filteredAds = ads.filter(ad => {
     const nameMatch = ad.name.toLowerCase().includes(nameFilter.toLowerCase());
@@ -31,6 +52,10 @@ function AdsPage() {
 
     return nameMatch && saleMatch;
   });
+
+  const handleToastClose = () => {
+    setShowToast(false);
+  };
 
   return (
     <Content title="What's going on...">
@@ -44,15 +69,14 @@ function AdsPage() {
           <ul>
             {filteredAds.map(({ id, name, sale, price, tags }) => (
               <li key={id}>
-                <Link to={`${id}`}>
+                <NavLink to={`${id}`}>
                   <div>
                     <h2>{name}</h2>
                     <p>Price: {price} €</p>
                     <p>{sale ? 'Sale' : 'Purchase'}</p>
                     <p>Tags: {tags.join(', ')}</p>
-                    <p></p>
                   </div>
-                </Link>
+                </NavLink>
               </li>
             ))}
           </ul>
@@ -60,6 +84,7 @@ function AdsPage() {
           <EmptyList />
         )}
       </div>
+      <Toast isOpen={showToast} message={toastMessage} onCancel={handleToastClose} />
     </Content>
   );
 }

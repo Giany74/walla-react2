@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
+import Toast from '../../../components/shared/Toast';
 import Content from '../../../components/layout/Content';
 import Button from '../../../components/shared/Button';
-
-import './NewAdPage.css';
 import { createAd } from '../service';
 import { useNavigate } from 'react-router';
 import TagsSelect from '../../../components/shared/TagsSelect';
@@ -13,6 +12,10 @@ function NewAdPage() {
   const [price, setPrice] = useState(0);
   const [tags, setTags] = useState([]);
   const [photo, setPhoto] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -37,10 +40,6 @@ function NewAdPage() {
     }
   };
 
-  const [isFetching, setIsFetching] = useState(false);
-
-  const navigate = useNavigate();
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
@@ -54,23 +53,30 @@ function NewAdPage() {
 
     try {
       setIsFetching(true);
+      setShowToast(false);
       const advert = await createAd(formData);
       navigate("/ads/" + advert.id);
     } catch (error) {
+      
       if (error.status === 401) {
         navigate('/login');
       } else {
+        setToastMessage(`${error.message}`);
+        setShowToast(true);
         setIsFetching(false);
       }
     }
   };
 
-  const buttonDisabled =
-    !(
-      name &&
-      sale !== undefined &&
-      price
-    ) || isFetching;
+  const handleToastClose = () => {
+    setShowToast(false);
+  };
+
+  const buttonDisabled = !(
+    name &&
+    sale !== undefined &&
+    price
+  ) || isFetching;
 
   return (
     <Content title='Buyer or Seller?'>
@@ -98,7 +104,6 @@ function NewAdPage() {
                 onChange={handleSaleChange}
               />
               <label htmlFor='saleTrue'>True</label>
-
               <input
                 type='radio'
                 id='saleFalse'
@@ -143,6 +148,7 @@ function NewAdPage() {
             </div>
           </form>
         </div>
+        <Toast isOpen={showToast} message={toastMessage} onCancel={handleToastClose} />
       </div>
     </Content>
   );

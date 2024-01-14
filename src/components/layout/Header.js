@@ -24,9 +24,6 @@ function Header({ className }) {
         >
           New Ad
         </NavLink>
-        <NavLink to="/signup" className={navItemClassName} style={{ color: 'grey'}} end>
-          SignUp
-        </NavLink>
         <NavLink to="/ads" className={navItemClassName} end>
           Last ads
         </NavLink>
