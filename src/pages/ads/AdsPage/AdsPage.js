@@ -8,12 +8,14 @@ import Toast from '../../../components/shared/Toast';
 
 import './AdsPage.css';
 
-const EmptyList = () => (
+const EmptyList = ({ isFilterApplied }) => (
   <div className="adsPage-empty">
-    <p>Be the first one!</p>
-    <NavLink to="new">
-      <Button $variant="primary">Create ad</Button>
-    </NavLink>
+    <h3>{isFilterApplied ? 'No matching ads found' : 'No ads available... Be the first one!'}</h3>
+    {!isFilterApplied && (
+      <NavLink to="new">
+        <Button $variant="primary">Create ad</Button>
+      </NavLink>
+    )}
   </div>
 );
 
@@ -65,23 +67,27 @@ function AdsPage() {
       />
 
       <div className="adsPage">
-        {filteredAds.length ? (
-          <ul>
-            {filteredAds.map(({ id, name, sale, price, tags }) => (
-              <li key={id}>
-                <NavLink to={`${id}`}>
-                  <div>
-                    <h2>{name}</h2>
-                    <p>Price: {price} €</p>
-                    <p>{sale ? 'Sale' : 'Purchase'}</p>
-                    <p>Tags: {tags.join(', ')}</p>
-                  </div>
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+        {ads.length > 0 ? (
+          filteredAds.length > 0 ? (
+            <ul>
+              {filteredAds.map(({ id, name, sale, price, tags }) => (
+                <li key={id}>
+                  <NavLink to={`${id}`}>
+                    <div>
+                      <h2>{name}</h2>
+                      <p>Price: {price} €</p>
+                      <p>{sale ? 'Sale' : 'Purchase'}</p>
+                      <p>Tags: {tags.join(', ')}</p>
+                    </div>
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyList isFilterApplied={nameFilter || saleFilter !== null} />
+          )
         ) : (
-          <EmptyList />
+          <EmptyList isFilterApplied={false} />
         )}
       </div>
       <Toast isOpen={showToast} message={toastMessage} onCancel={handleToastClose} />
