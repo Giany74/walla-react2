@@ -22,7 +22,6 @@ function AuthButton({ className }) {
     await logout();
     onLogout();
     setLogoutConfirmationOpen(false);
-    // Navegar a '/login' después del logout
     navigate('/login');
   };
 

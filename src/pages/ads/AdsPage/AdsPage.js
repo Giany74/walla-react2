@@ -29,24 +29,30 @@ function AdsPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setIsFetching(true);
-    setShowToast(false);
+    const fetchData = async () => {
+      try {
+        setIsFetching(true);
+        setShowToast(false);
 
-    getLatestAds()
-      .then(ads => setAds(ads))
-      .catch(error => {
-        setIsFetching(false);
-        setToastMessage("An error occurred while fetching ads. Please try again later.");
-        setShowToast(true);
-
-        if (!isFetching && error.status === 401) {
+        const latestAds = await getLatestAds();
+        setAds(latestAds);
+      } catch (error) {
+        if (error.status === 401) {
           navigate('/login');
+        } else if (error.status === 404) {
+          navigate('/404');
+        } else {
+          setToastMessage("An error occurred while fetching ads. Please try again later.");
+          setShowToast(true);
         }
-      })
-      .finally(() => {
+      } finally {
         setIsFetching(false);
-      });
-  }, [navigate, isFetching]);
+      }
+    };
+
+    fetchData();
+
+  }, [navigate]);
 
   const filteredAds = ads.filter(ad => {
     const nameMatch = ad.name.toLowerCase().includes(nameFilter.toLowerCase());

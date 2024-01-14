@@ -21,7 +21,6 @@ function AdPage() {
     getAd(params.adId)
       .then(ad => setAd(ad))
       .catch(error => {
-        
         if (error.status === 401) {
           navigate('/login');
         } else {
@@ -43,9 +42,10 @@ function AdPage() {
       await deleteAd(params.adId);
       navigate('/ads');
     } catch (error) {
-      
       if (error.status === 401) {
         navigate('/login');
+      } else if (error.status === 404) {
+        navigate('/404');
       } else {
         setToastMessage(`${error.message}`);
         setShowToast(true);
@@ -80,9 +80,9 @@ function AdPage() {
               <img src={defaultPhoto} alt="Placeholder" />
             )}
             <div>
-            <Button onClick={handleDelete} disabled={!isFetching}>
-              {isFetching ? 'Delete' : 'Deleting...'}
-            </Button>
+              <Button onClick={handleDelete} disabled={!isFetching}>
+                {isFetching ? 'Delete' : 'Deleting...'}
+              </Button>
             </div>
           </div>
         )}

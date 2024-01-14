@@ -50,16 +50,17 @@ function NewAdPage() {
     if (photo) {
       formData.append("photo", photo);
     }
-
+  
     try {
       setIsFetching(true);
       setShowToast(false);
       const advert = await createAd(formData);
       navigate("/ads/" + advert.id);
     } catch (error) {
-      
       if (error.status === 401) {
         navigate('/login');
+      } else if (error.status === 404) {
+        navigate('/404');
       } else {
         setToastMessage(`${error.message}`);
         setShowToast(true);

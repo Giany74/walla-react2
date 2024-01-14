@@ -7,7 +7,7 @@ import NewAdPage from './pages/ads/NewAdPage/NewAdPage';
 import AdPage from './pages/ads/AdPage';
 import RequireAuth from './pages/auth/components/RequireAuth';
 import SignUpPage from './pages/auth/SignUpPage';
-import Page404 from './components/shared/404';
+import NotFoundPage from './components/shared/NotFoundPage';
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
         />
       </Route>
       <Route path="/" element={<Navigate to="/ads" />} />
-      <Route path="/404" element={<div>404 | Not found</div>} />
+      <Route path="/404" element={<NotFoundPage />} />
       <Route path="*" element={<Navigate to="/404" />} />
     </Routes>
   );
