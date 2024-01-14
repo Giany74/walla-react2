@@ -46,7 +46,7 @@ function AdsPage() {
       .finally(() => {
         setIsFetching(false);
       });
-  }, [navigate]);
+  }, [navigate, isFetching]);
 
   const filteredAds = ads.filter(ad => {
     const nameMatch = ad.name.toLowerCase().includes(nameFilter.toLowerCase());
