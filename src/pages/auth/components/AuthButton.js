@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../../components/shared/Button';
 import { useAuth } from '../context';
 import { logout } from '../service';
@@ -8,8 +8,9 @@ import ConfirmationModal from '../../../components/shared/ConfirmationModal';
 function AuthButton({ className }) {
   const { isLogged, onLogout } = useAuth();
   const [isLogoutConfirmationOpen, setLogoutConfirmationOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogoutClick = async () => {
+  const handleLogoutClick = () => {
     setLogoutConfirmationOpen(true);
   };
 
@@ -21,6 +22,8 @@ function AuthButton({ className }) {
     await logout();
     onLogout();
     setLogoutConfirmationOpen(false);
+    // Navegar a '/login' después del logout
+    navigate('/login');
   };
 
   return (

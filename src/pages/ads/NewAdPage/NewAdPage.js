@@ -75,7 +75,8 @@ function NewAdPage() {
   const buttonDisabled = !(
     name &&
     sale !== undefined &&
-    price
+    price &&
+    tags.length > 0
   ) || isFetching;
 
   return (
