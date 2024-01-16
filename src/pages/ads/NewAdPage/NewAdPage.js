@@ -16,7 +16,7 @@ function NewAdPage() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const navigate = useNavigate();
-
+  
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
@@ -50,7 +50,6 @@ function NewAdPage() {
     if (photo) {
       formData.append("photo", photo);
     }
-  
     try {
       setIsFetching(true);
       setShowToast(false);
@@ -64,7 +63,6 @@ function NewAdPage() {
       } else {
         setToastMessage(`${error.message}`);
         setShowToast(true);
-        setIsFetching(false);
       }
     }
   };
@@ -145,7 +143,7 @@ function NewAdPage() {
                 $variant='primary'
                 disabled={buttonDisabled}
               >
-                {isFetching ? 'Connecting...' : "Let's go!"}
+                {isFetching ? 'Creating...' : "Create Ad"}
               </Button>
             </div>
           </form>

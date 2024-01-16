@@ -14,11 +14,11 @@ function AdPage() {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setShowToast(false);
-
       try {
         const fetchedAd = await getAd(params.adId);
         setAd(fetchedAd);
@@ -45,6 +45,7 @@ function AdPage() {
   const handleConfirmDelete = async () => {
     try {
       setShowToast(false);
+      setIsFetching(true);
       await deleteAd(params.adId);
       navigate('/ads');
     } catch (error) {
@@ -86,7 +87,7 @@ function AdPage() {
             )}
             <div>
               <Button onClick={handleDelete}>
-                Deleting...
+                {isFetching ? 'Deleting...' : "Delete"}
               </Button>
             </div>
           </div>

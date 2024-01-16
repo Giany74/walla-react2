@@ -7,8 +7,9 @@ const client = axios.create({
 client.interceptors.response.use(
   response => response.data,
   error => {
+    //console.log(error);
     if (error.response) {
-      console.log(error.response);
+      //console.log(error.response);
       // 400/500 server error
       return Promise.reject({
         message: error.response.statusText,
