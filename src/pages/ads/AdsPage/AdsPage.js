@@ -5,6 +5,7 @@ import Button from '../../../components/shared/Button';
 import Content from '../../../components/layout/Content';
 import Filter from './Filter';
 import Toast from '../../../components/shared/Toast';
+import PropTypes from 'prop-types';
 
 import './AdsPage.css';
 
@@ -18,6 +19,10 @@ const EmptyList = ({ isFilterApplied }) => (
     )}
   </div>
 );
+
+EmptyList.propTypes = {
+  isFilterApplied: PropTypes.bool.isRequired,
+};
 
 function AdsPage() {
   const [ads, setAds] = useState([]);
@@ -96,5 +101,22 @@ function AdsPage() {
     </Content>
   );
 }
+
+AdsPage.propTypes = {
+  ads: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      sale: PropTypes.bool.isRequired,
+      price: PropTypes.number.isRequired,
+      tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    })
+  ),
+  nameFilter: PropTypes.string,
+  saleFilter: PropTypes.bool,
+  showToast: PropTypes.bool,
+  toastMessage: PropTypes.string,
+  navigate: PropTypes.func,
+};
 
 export default AdsPage;

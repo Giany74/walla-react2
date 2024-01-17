@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from './Button';
+import PropTypes from 'prop-types';
 
 const ConfirmationModal = ({ isOpen, onCancel, onConfirm, message }) => {
   return (
@@ -16,6 +17,13 @@ const ConfirmationModal = ({ isOpen, onCancel, onConfirm, message }) => {
       </div>
     </div>
   );
+};
+
+ConfirmationModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 export default ConfirmationModal;

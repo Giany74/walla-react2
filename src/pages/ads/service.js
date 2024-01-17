@@ -1,4 +1,5 @@
 import client from '../../api/client';
+import PropTypes from 'prop-types';
 
 const adsUrl = '/v1/adverts';
 const authUrl = '/auth';
@@ -50,4 +51,31 @@ export const createAuth = (signup) => {
 export const deleteAd = id => {
   const url = `${adsUrl}/${id}`;
   return client.delete(url);
+};
+
+
+getLatestAds.propTypes = PropTypes.func;
+
+createAd.propTypes = {
+  formData: PropTypes.object.isRequired,
+};
+
+getAd.propTypes = {
+  id: PropTypes.string.isRequired,
+};
+
+getAdTag.propTypes = {
+  tags: PropTypes.string.isRequired,
+};
+
+getAuthMe.propTypes = {
+  me: PropTypes.string.isRequired,
+};
+
+createAuth.propTypes = {
+  signup: PropTypes.object.isRequired,
+};
+
+deleteAd.propTypes = {
+  id: PropTypes.string.isRequired,
 };

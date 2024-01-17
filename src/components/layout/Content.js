@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 function Content({ title, children }) {
   return (
     <>
@@ -6,5 +8,10 @@ function Content({ title, children }) {
     </>
   );
 }
+
+Content.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export default Content;

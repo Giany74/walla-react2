@@ -6,6 +6,7 @@ import defaultPhoto from '../../../assets/default-profile.png';
 import ConfirmationModal from '../../../components/shared/ConfirmationModal';
 import Button from '../../../components/shared/Button';
 import Toast from '../../../components/shared/Toast';
+import PropTypes from 'prop-types';
 
 function AdPage() {
   const params = useParams();
@@ -103,5 +104,12 @@ function AdPage() {
     </Content>
   );
 }
+
+AdPage.propTypes = {
+  getAd: PropTypes.func,
+  deleteAd: PropTypes.func,
+  params: PropTypes.object,
+  navigate: PropTypes.func,
+};
 
 export default AdPage;

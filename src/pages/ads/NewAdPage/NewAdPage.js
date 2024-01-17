@@ -5,6 +5,7 @@ import Button from '../../../components/shared/Button';
 import { createAd } from '../service';
 import { useNavigate } from 'react-router';
 import TagsSelect from '../../../components/shared/TagsSelect';
+import PropTypes from 'prop-types';
 
 function NewAdPage() {
   const [name, setName] = useState("");
@@ -153,5 +154,17 @@ function NewAdPage() {
     </Content>
   );
 }
+
+NewAdPage.propTypes = {
+  name: PropTypes.string,
+  sale: PropTypes.bool,
+  price: PropTypes.number,
+  tags: PropTypes.array,
+  photo: PropTypes.string,
+  isFetching: PropTypes.bool,
+  showToast: PropTypes.bool,
+  toastMessage: PropTypes.string,
+  navigate: PropTypes.func,
+};
 
 export default NewAdPage;

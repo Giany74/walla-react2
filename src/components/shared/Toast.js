@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const Toast = ({ isOpen, onCancel, onConfirm, message }) => {
   const [isVisible, setIsVisible] = useState(isOpen);
@@ -21,6 +22,13 @@ const Toast = ({ isOpen, onCancel, onConfirm, message }) => {
       </div>
     </div>
   );
+};
+
+Toast.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func,
+  onConfirm: PropTypes.func,
+  message: PropTypes.string.isRequired,
 };
 
 export default Toast;

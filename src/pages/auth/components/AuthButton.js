@@ -4,6 +4,7 @@ import Button from '../../../components/shared/Button';
 import { useAuth } from '../context';
 import { logout } from '../service';
 import ConfirmationModal from '../../../components/shared/ConfirmationModal';
+import PropTypes from 'prop-types';
 
 function AuthButton({ className }) {
   const { isLogged, onLogout } = useAuth();
@@ -46,5 +47,9 @@ function AuthButton({ className }) {
     </>
   );
 }
+
+AuthButton.propTypes = {
+  className: PropTypes.string,
+};
 
 export default AuthButton;

@@ -2,8 +2,10 @@ import { Link, NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 import { ReactComponent as Icon } from '../../assets/logo-threads.svg';
 import AuthButton from '../../pages/auth/components/AuthButton';
+import PropTypes from 'prop-types';
 
 import './Header.css';
+
 
 const navItemClassName = ({ isActive }) =>
   clsx('header-nav-item', { active: isActive });
@@ -32,5 +34,9 @@ function Header({ className }) {
     </header>
   );
 }
+
+Header.propTypes = {
+  className: PropTypes.string,
+};
 
 export default Header;

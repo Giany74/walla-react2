@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getTags } from "../../pages/ads/service";
+import PropTypes from 'prop-types';
 
 const TagsSelect = ({ onTagsChange }) => {
   const [tags, setTags] = useState([]);
@@ -49,6 +50,10 @@ const TagsSelect = ({ onTagsChange }) => {
       </div>
     </div>
   );
+};
+
+TagsSelect.propTypes = {
+  onTagsChange: PropTypes.func.isRequired,
 };
 
 export default TagsSelect;

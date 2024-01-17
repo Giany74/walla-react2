@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Filter({ onNameChange, onSaleChange, onPurchaseChange }) {
 	return (
@@ -40,5 +41,11 @@ function Filter({ onNameChange, onSaleChange, onPurchaseChange }) {
 		</div>
 	);
 }
+
+Filter.propTypes = {
+	onNameChange: PropTypes.func,
+	onSaleChange: PropTypes.func,
+	onPurchaseChange: PropTypes.func,
+  };
 
 export default Filter;
