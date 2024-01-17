@@ -21,6 +21,15 @@ function Filter({ onNameChange, onSaleChange, onPurchaseChange }) {
 			</label>
 			<div>
 				<label>
+					All:
+					<input
+						type='radio'
+						name='salePurchase'
+						onChange={() => onSaleChange(null)}
+					/>
+				</label>
+
+				<label>
 					Sale:
 					<input
 						type='radio'

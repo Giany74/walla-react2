@@ -20,10 +20,6 @@ const EmptyList = ({ isFilterApplied }) => (
   </div>
 );
 
-EmptyList.propTypes = {
-  isFilterApplied: PropTypes.bool.isRequired,
-};
-
 function AdsPage() {
   const [ads, setAds] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
@@ -67,7 +63,7 @@ function AdsPage() {
   };
 
   return (
-    <Content title="What's going on...">
+    <Content title="Last ads">
       <Filter
         onNameChange={(e) => setNameFilter(e.target.value)}
         onSaleChange={(value) => setSaleFilter(value)}
