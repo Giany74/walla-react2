@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function Filter({ onNameChange, onSaleChange, onPurchaseChange }) {
+function Filter({ onNameChange, onSaleChange }) {
+	const [selectedOption, setSelectedOption] = useState('all');
+
 	return (
 		<div
 			className='filter'
@@ -25,7 +27,11 @@ function Filter({ onNameChange, onSaleChange, onPurchaseChange }) {
 					<input
 						type='radio'
 						name='salePurchase'
-						onChange={() => onSaleChange(null)}
+						onChange={() => {
+							setSelectedOption('all');
+							onSaleChange(null);
+						}}
+						checked={selectedOption === 'all'}
 					/>
 				</label>
 
@@ -34,7 +40,11 @@ function Filter({ onNameChange, onSaleChange, onPurchaseChange }) {
 					<input
 						type='radio'
 						name='salePurchase'
-						onChange={() => onSaleChange(true)}
+						onChange={() => {
+							setSelectedOption('sale');
+							onSaleChange(true);
+						}}
+						checked={selectedOption === 'sale'}
 					/>
 				</label>
 
@@ -43,7 +53,11 @@ function Filter({ onNameChange, onSaleChange, onPurchaseChange }) {
 					<input
 						type='radio'
 						name='salePurchase'
-						onChange={() => onSaleChange(false)}
+						onChange={() => {
+							setSelectedOption('purchase');
+							onSaleChange(false);
+						}}
+						checked={selectedOption === 'purchase'}
 					/>
 				</label>
 			</div>
@@ -54,7 +68,6 @@ function Filter({ onNameChange, onSaleChange, onPurchaseChange }) {
 Filter.propTypes = {
 	onNameChange: PropTypes.func,
 	onSaleChange: PropTypes.func,
-	onPurchaseChange: PropTypes.func,
-  };
+};
 
 export default Filter;
